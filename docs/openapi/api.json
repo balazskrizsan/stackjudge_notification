@@ -1,0 +1,85 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "stackjudge-aws API",
+    "version" : "1.0-SNAPSHOT"
+  },
+  "paths" : {
+    "/s3/upload" : {
+      "post" : {
+        "tags" : [ "Post Upload" ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PostUploadRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/ses/send/company-own-email" : {
+      "post" : {
+        "tags" : [ "Post Send Action" ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PostCompanyOwnEmailRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "FileUpload" : {
+        "type" : "object"
+      },
+      "PostCompanyOwnEmailRequest" : {
+        "type" : "object",
+        "properties" : {
+          "to" : {
+            "type" : "string"
+          },
+          "varName" : {
+            "type" : "string"
+          },
+          "varOwnUrl" : {
+            "type" : "string"
+          }
+        }
+      },
+      "PostUploadRequest" : {
+        "type" : "object",
+        "properties" : {
+          "cdnNamespace" : {
+            "type" : "string"
+          },
+          "fileName" : {
+            "type" : "string"
+          },
+          "fileExtension" : {
+            "type" : "string"
+          },
+          "content" : {
+            "$ref" : "#/components/schemas/FileUpload"
+          }
+        }
+      }
+    }
+  }
+}
