@@ -1,15 +1,11 @@
 package com.kbalazsworks.stackjudge_notification.pushover.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.kbalazsworks.stackjudge_notification.common.factories.HttpClientFactory
 import com.kbalazsworks.stackjudge_notification.common.services.ApplicationPropertiesService
 import com.kbalazsworks.stackjudge_notification.common.services.UserDataApiService
-import com.kbalazsworks.stackjudge_notification.main_app.entities.ResponseDataPushoverInfo
 import com.kbalazsworks.stackjudge_notification.push.value_objects.PushToUser
 import com.kbalazsworks.stackjudge_notification.pushover.enum.ApiUrls
 import io.vertx.core.json.JsonObject
-import org.apache.http.client.methods.HttpGet
-import org.apache.http.util.EntityUtils
+import org.apache.http.HttpStatus
 import org.slf4j.LoggerFactory
 import java.net.HttpURLConnection
 import java.net.URL
@@ -26,6 +22,8 @@ class SendPushMessageService(
     }
 
     fun sendPush(pushToUser: PushToUser) {
+        logger.info("Push sent to user#{}", pushToUser.userId)
+
         val data = JsonObject()
             .put("token", applicationPropertiesService.pushoverAppToken)
             .put("user", userDataApiService.getUserTokenByUserId(pushToUser.userId))
@@ -41,8 +39,15 @@ class SendPushMessageService(
         val stream = http.outputStream
         stream.write(data.toByteArray(StandardCharsets.UTF_8))
 
-        logger.info("Push sent to user#{}; response code: {}; message: {}", pushToUser.userId, http.responseCode, http.responseMessage)
-
         http.disconnect()
+
+        if (http.responseCode !in setOf(HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT)) {
+            logger.error(
+                "Push send failed to user#{}; response code: {}; message: {}",
+                pushToUser.userId,
+                http.responseCode,
+                http.responseMessage
+            )
+        }
     }
 }
