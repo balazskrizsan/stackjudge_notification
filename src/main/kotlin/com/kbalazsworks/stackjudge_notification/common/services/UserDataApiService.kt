@@ -8,9 +8,15 @@ import org.apache.http.util.EntityUtils
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class UserDataApiService(private val httpClientFactory: HttpClientFactory) {
+class UserDataApiService(
+    private val httpClientFactory: HttpClientFactory,
+    private val applicationPropertiesService: ApplicationPropertiesService
+) {
     fun getUserTokenByUserId(userId: Int): String {
-        val request = HttpGet("https://localhost:8181/account/1/pushover/token-by-user-id-action")
+        val request = HttpGet(
+            applicationPropertiesService.mainStackjudgeAppHost
+                    + "/account/1/pushover/token-by-user-id-action"
+        )
         val nativeResponse = httpClientFactory.build().execute(request)
 
         val response = ObjectMapper().readValue(

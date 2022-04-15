@@ -7,4 +7,6 @@ import javax.enterprise.context.ApplicationScoped
 class ApplicationPropertiesService {
     @ConfigProperty(name = "pushover.app.token")
     var pushoverAppToken: String = ""
+    @ConfigProperty(name = "main.stackjudge.app.host")
+    var mainStackjudgeAppHost: String = ""
 }
