@@ -7,11 +7,11 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native -t quarkus/stackjudge-aws .
+# docker build -f src/main/docker/Dockerfile.native -t quarkus/stackjudge_notification .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/stackjudge-aws
+# docker run -i --rm -p 8080:8080 quarkus/stackjudge_notification
 #
 ###
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.4

@@ -7,11 +7,11 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native-distroless -t quarkus/stackjudge-aws .
+# docker build -f src/main/docker/Dockerfile.native-distroless -t quarkus/stackjudge_notification .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/stackjudge-aws
+# docker run -i --rm -p 8080:8080 quarkus/stackjudge_notification
 #
 ###
 FROM quay.io/quarkus/quarkus-distroless-image:1.0

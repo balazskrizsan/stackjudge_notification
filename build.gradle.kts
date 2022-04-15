@@ -26,7 +26,6 @@ dependencies {
     // custom
     // https://mvnrepository.com/artifact/org.eclipse.microprofile.rest.client/microprofile-rest-client-api
     implementation("org.eclipse.microprofile.rest.client:microprofile-rest-client-api:3.0")
-    // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ses
     // https://mvnrepository.com/artifact/io.quarkus/quarkus-resteasy-reactive
     implementation("io.quarkus:quarkus-resteasy-reactive:2.4.2.Final")
     // https://mvnrepository.com/artifact/io.quarkus/quarkus-resteasy-reactive-qute
