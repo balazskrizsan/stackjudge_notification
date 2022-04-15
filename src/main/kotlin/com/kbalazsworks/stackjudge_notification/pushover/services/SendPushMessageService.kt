@@ -3,7 +3,7 @@ package com.kbalazsworks.stackjudge_notification.pushover.services
 import com.kbalazsworks.stackjudge_notification.common.services.ApplicationPropertiesService
 import com.kbalazsworks.stackjudge_notification.common.services.UserDataApiService
 import com.kbalazsworks.stackjudge_notification.push.value_objects.PushToUser
-import com.kbalazsworks.stackjudge_notification.pushover.enum.ApiUrls
+import com.kbalazsworks.stackjudge_notification.pushover.enums.ApiUrls
 import io.vertx.core.json.JsonObject
 import org.apache.http.HttpStatus
 import org.slf4j.LoggerFactory
