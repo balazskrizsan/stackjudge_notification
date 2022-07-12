@@ -17,7 +17,6 @@ import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
 class OidcHttpClientService(private val httpClientFactory: HttpClientFactory) {
-
     private val objectMapper = ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 

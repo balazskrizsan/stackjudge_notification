@@ -11,19 +11,19 @@ class OidcService(
     private val oidcHttpClientService: OidcHttpClientService,
     private val tokenService: TokenService,
     private val systemFactory: SystemFactory,
-): IOidcService {
+) : IOidcService {
     companion object {
         private val logger = LoggerFactory.getLogger(OidcService::class.toString())
     }
 
-    fun callJwksEndpoint(): JwksKeys {
+    override fun callJwksEndpoint(): JwksKeys {
         return oidcHttpClientService.getWithMap(
             oidcConfig.jwksUri,
             JwksKeys::class.java
         )
     }
 
-    fun isJwksVerifiedToken(token: String): Boolean {
+    override fun isJwksVerifiedToken(token: String): Boolean {
         val oneKey = callJwksEndpoint().keys[0]
         val publicKey = tokenService.getPublicKey(oneKey.n, oneKey.e)
         val signature = tokenService.getSignature(token)
@@ -38,7 +38,7 @@ class OidcService(
         }
     }
 
-    fun checkJwksVerifiedToken(token: String) {
+    override fun checkJwksVerifiedToken(token: String) {
         if (!isJwksVerifiedToken(token)) {
             throw OidcException("JWKS verification error")
         }
@@ -51,15 +51,25 @@ class OidcService(
         return expiration < now
     }
 
-    fun checkExpiredToken(token: String) {
+    override fun checkExpiredToken(token: String) {
         if (isExpiredToken(token)) {
             throw OidcException("Expired token")
         }
     }
 
-    fun checkValidated(token: String) {
+    override fun checkValidated(token: String) {
         checkExpiredToken(token)
         checkJwksVerifiedToken(token)
+    }
+
+    override fun hasScopesInToken(token: String, scopes: List<String>): Boolean {
+        return tokenService.getJwtData(token).scope.containsAll(scopes)
+    }
+
+    override fun checkScopesInToken(token: String, scopes: List<String>) {
+        if (!tokenService.getJwtData(token).scope.containsAll(scopes)) {
+            throw OidcException("Scope missing from token")
+        }
     }
 
 //    fun isValidBefore() {
