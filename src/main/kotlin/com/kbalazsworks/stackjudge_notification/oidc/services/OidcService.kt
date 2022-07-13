@@ -4,6 +4,8 @@ import com.kbalazsworks.stackjudge_notification.common.factories.SystemFactory
 import com.kbalazsworks.stackjudge_notification.oidc.entities.JwksKeys
 import com.kbalazsworks.stackjudge_notification.oidc.entities.OidcConfig
 import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcException
+import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcExpiredTokenException
+import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcJwksVerificationException
 import org.slf4j.LoggerFactory
 
 class OidcService(
@@ -24,13 +26,8 @@ class OidcService(
     }
 
     override fun isJwksVerifiedToken(token: String): Boolean {
-        val oneKey = callJwksEndpoint().keys[0]
-        val publicKey = tokenService.getPublicKey(oneKey.n, oneKey.e)
-        val signature = tokenService.getSignature(token)
-        val signedData = tokenService.getSignedData(token)
-
         return try {
-            tokenService.isVerified(publicKey, signedData, signature)
+            checkJwksVerifiedTokenLogic(token)
         } catch (e: Exception) {
             logger.error("JWKS verification failed: {}", e.message)
 
@@ -39,9 +36,25 @@ class OidcService(
     }
 
     override fun checkJwksVerifiedToken(token: String) {
-        if (!isJwksVerifiedToken(token)) {
-            throw OidcException("JWKS verification error")
+        var isVerified = false
+        try {
+            isVerified = checkJwksVerifiedTokenLogic(token)
+        } catch (e: Exception) {
+            throw OidcJwksVerificationException(e.message ?: "")
         }
+
+        if (!isVerified) {
+            throw OidcJwksVerificationException()
+        }
+    }
+
+    private fun checkJwksVerifiedTokenLogic(token: String): Boolean {
+        val oneKey = callJwksEndpoint().keys[0]
+        val publicKey = tokenService.getPublicKey(oneKey.n, oneKey.e)
+        val signature = tokenService.getSignature(token)
+        val signedData = tokenService.getSignedData(token)
+
+        return tokenService.isVerified(publicKey, signedData, signature)
     }
 
     override fun isExpiredToken(token: String): Boolean {
@@ -53,7 +66,7 @@ class OidcService(
 
     override fun checkExpiredToken(token: String) {
         if (isExpiredToken(token)) {
-            throw OidcException("Expired token")
+            throw OidcExpiredTokenException()
         }
     }
 
@@ -67,6 +80,8 @@ class OidcService(
     }
 
     override fun checkScopesInToken(token: String, scopes: List<String>) {
+        checkValidated(token)
+
         if (!tokenService.getJwtData(token).scope.containsAll(scopes)) {
             throw OidcException("Scope missing from token")
         }

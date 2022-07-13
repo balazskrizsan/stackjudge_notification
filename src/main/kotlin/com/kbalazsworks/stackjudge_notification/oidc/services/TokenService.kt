@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.kbalazsworks.stackjudge_notification.oidc.entities.JwtData
 import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcException
+import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcJwtParseException
 import java.math.BigInteger
 import java.security.KeyFactory
 import java.security.NoSuchAlgorithmException
@@ -36,21 +37,33 @@ class TokenService {
     }
 
     fun getSignedData(token: String): ByteArray {
-        return token.substring(0, token.lastIndexOf(".")).toByteArray()
+        try {
+            return token.substring(0, token.lastIndexOf(".")).toByteArray()
+        } catch (e: Exception) {
+            throw OidcJwtParseException(e.message ?: "")
+        }
     }
 
     fun getJwtData(token: String): JwtData {
-        val tokenParts = token.split(".")
-        val dataPart = tokenParts[1].toByteArray()
-        val decodedJwtData = Base64.getDecoder().decode(dataPart).decodeToString()
+        try {
+            val tokenParts = token.split(".")
+            val dataPart = tokenParts[1].toByteArray()
+            val decodedJwtData = Base64.getDecoder().decode(dataPart).decodeToString()
 
-        return objectMapper.readValue(decodedJwtData, JwtData::class.java)
+            return objectMapper.readValue(decodedJwtData, JwtData::class.java)
+        } catch (e: Exception) {
+            throw OidcJwtParseException(e.message ?: "")
+        }
     }
 
     fun getSignature(token: String): ByteArray {
-        val signatureB64u = token.substring(token.lastIndexOf(".") + 1, token.length)
+        try {
+            val signatureB64u = token.substring(token.lastIndexOf(".") + 1, token.length)
 
-        return Base64.getUrlDecoder().decode(signatureB64u)
+            return Base64.getUrlDecoder().decode(signatureB64u)
+        } catch (e: Exception) {
+            throw OidcJwtParseException(e.message ?: "")
+        }
     }
 
     fun isVerified(publicKey: PublicKey, signedData: ByteArray, signature: ByteArray): Boolean {

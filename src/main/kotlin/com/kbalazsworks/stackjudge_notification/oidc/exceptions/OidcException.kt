@@ -1,6 +1,6 @@
 package com.kbalazsworks.stackjudge_notification.oidc.exceptions
 
-class OidcException : Exception {
+open class OidcException : Exception {
     constructor() : super()
     constructor(message: String) : super(message)
     constructor(message: String, cause: Throwable) : super(message, cause)
