@@ -7,6 +7,7 @@ import com.kbalazsworks.stackjudge_notification.pushover.exceptions.PushoverExce
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.util.EntityUtils
+import org.slf4j.LoggerFactory
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
@@ -14,6 +15,10 @@ class UserDataApiService(
     private val httpClientFactory: HttpClientFactory,
     private val applicationPropertiesService: ApplicationPropertiesService
 ) {
+    companion object {
+        private val logger = LoggerFactory.getLogger(UserDataApiService::class.toString())
+    }
+
     @Throws(PushoverException::class)
     fun getUserTokenByUserId(userId: Int): String {
         val request = HttpGet(
@@ -24,7 +29,9 @@ class UserDataApiService(
         try {
             nativeResponse = httpClientFactory.build().execute(request)
         } catch (e: Exception) {
-            throw PushoverException("Token request error.")
+            logger.error("Token request error: {}", e.message)
+
+            throw PushoverException("Token request error")
         }
 
         val response = ObjectMapper().readValue(
