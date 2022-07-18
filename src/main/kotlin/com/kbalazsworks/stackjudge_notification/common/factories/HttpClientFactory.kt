@@ -8,6 +8,7 @@ import org.apache.http.ssl.SSLContextBuilder
 import java.io.File
 import java.io.FileInputStream
 import java.security.KeyStore
+import java.security.SecureRandom
 import javax.enterprise.context.ApplicationScoped
 import javax.net.ssl.SSLContext
 
@@ -26,8 +27,9 @@ class HttpClientFactory(private val applicationPropertiesService: ApplicationPro
 
         return SSLContextBuilder
             .create()
+            .setSecureRandom(SecureRandom())
             .loadKeyMaterial(
-                keyStore("W:\\Java\\stackjudge_notification\\src\\main\\resources\\keystore\\sjdev.p12", password),
+                keyStore("${applicationPropertiesService.keystoreFullPath}\\sjdev.p12", password),
                 password
             )
             .loadTrustMaterial(null, TrustSelfSignedStrategy())

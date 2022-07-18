@@ -1,6 +1,6 @@
-package com.kbalazsworks.stackjudge_notification.oidc.services
+package com.kbalazsworks.oidc.services
 
-import com.kbalazsworks.stackjudge_notification.oidc.entities.JwksKeys
+import com.kbalazsworks.oidc.entities.JwksKeys
 
 interface IOidcService {
     fun callJwksEndpoint(): JwksKeys

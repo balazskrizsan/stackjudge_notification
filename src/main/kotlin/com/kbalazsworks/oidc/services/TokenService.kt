@@ -1,22 +1,25 @@
-package com.kbalazsworks.stackjudge_notification.oidc.services
+package com.kbalazsworks.oidc.services
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.kbalazsworks.stackjudge_notification.oidc.entities.JwtData
-import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcException
-import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcJwtParseException
+import com.kbalazsworks.oidc.entities.JwtData
+import com.kbalazsworks.oidc.exceptions.OidcException
+import com.kbalazsworks.oidc.exceptions.OidcJwtParseException
+import org.slf4j.LoggerFactory
 import java.math.BigInteger
 import java.security.KeyFactory
-import java.security.NoSuchAlgorithmException
 import java.security.PublicKey
 import java.security.Signature
-import java.security.spec.InvalidKeySpecException
 import java.security.spec.RSAPublicKeySpec
 import java.util.*
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
 class TokenService {
+    companion object {
+        private val logger = LoggerFactory.getLogger(OidcService::class.toString())
+    }
+
     private val objectMapper = ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
@@ -28,11 +31,16 @@ class TokenService {
             val bigModulus = BigInteger(1, modulusB)
             val publicKey = KeyFactory.getInstance("RSA").generatePublic(RSAPublicKeySpec(bigModulus, bigExponent));
 
-            return publicKey;
-        } catch (e: InvalidKeySpecException) {
-            throw OidcException("Public key error: " + e.message)
-        } catch (e: NoSuchAlgorithmException) {
-            throw OidcException("Public key error: " + e.message)
+            return publicKey
+        } catch (e: Exception) {
+            when(e) {
+                is IllegalAccessException, is IndexOutOfBoundsException -> {
+                    logger.error("Public key error: {}", e.message)
+
+                    throw OidcException("Public key error")
+                }
+                else -> throw e
+            }
         }
     }
 

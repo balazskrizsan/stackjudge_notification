@@ -1,4 +1,4 @@
-package com.kbalazsworks.stackjudge_notification.oidc.entities
+package com.kbalazsworks.oidc.entities
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

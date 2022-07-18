@@ -1,11 +1,11 @@
-package com.kbalazsworks.stackjudge_notification.oidc.services
+package com.kbalazsworks.oidc.services
 
+import com.kbalazsworks.oidc.entities.JwksKeys
+import com.kbalazsworks.oidc.entities.OidcConfig
+import com.kbalazsworks.oidc.exceptions.OidcException
+import com.kbalazsworks.oidc.exceptions.OidcExpiredTokenException
+import com.kbalazsworks.oidc.exceptions.OidcJwksVerificationException
 import com.kbalazsworks.stackjudge_notification.common.factories.SystemFactory
-import com.kbalazsworks.stackjudge_notification.oidc.entities.JwksKeys
-import com.kbalazsworks.stackjudge_notification.oidc.entities.OidcConfig
-import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcException
-import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcExpiredTokenException
-import com.kbalazsworks.stackjudge_notification.oidc.exceptions.OidcJwksVerificationException
 import org.slf4j.LoggerFactory
 
 class OidcService(
@@ -36,7 +36,7 @@ class OidcService(
     }
 
     override fun checkJwksVerifiedToken(token: String) {
-        var isVerified = false
+        val isVerified: Boolean
         try {
             isVerified = checkJwksVerifiedTokenLogic(token)
         } catch (e: Exception) {
@@ -82,7 +82,9 @@ class OidcService(
     override fun checkScopesInToken(token: String, scopes: List<String>) {
         checkValidated(token)
 
-        if (!tokenService.getJwtData(token).scope.containsAll(scopes)) {
+        val matchedScopes = tokenService.getJwtData(token).scope.stream().filter { s -> scopes.contains(s) }
+
+        if (matchedScopes.count() == 0L) {
             throw OidcException("Scope missing from token")
         }
     }

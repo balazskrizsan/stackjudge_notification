@@ -1,10 +1,10 @@
-package com.kbalazsworks.stackjudge_notification.oidc.factories
+package com.kbalazsworks.oidc.factories
 
 import com.kbalazsworks.stackjudge_notification.common.factories.SystemFactory
-import com.kbalazsworks.stackjudge_notification.oidc.entities.OidcConfig
-import com.kbalazsworks.stackjudge_notification.oidc.services.OidcHttpClientService
-import com.kbalazsworks.stackjudge_notification.oidc.services.OidcService
-import com.kbalazsworks.stackjudge_notification.oidc.services.TokenService
+import com.kbalazsworks.oidc.entities.OidcConfig
+import com.kbalazsworks.oidc.services.OidcHttpClientService
+import com.kbalazsworks.oidc.services.OidcService
+import com.kbalazsworks.oidc.services.TokenService
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped

@@ -1,4 +1,4 @@
-package com.kbalazsworks.stackjudge_notification.oidc.exceptions
+package com.kbalazsworks.oidc.exceptions
 
 open class OidcException : Exception {
     constructor() : super()

@@ -1,7 +1,7 @@
-package com.kbalazsworks.stackjudge_notification.oidc
+package com.kbalazsworks.oidc
 
-import com.kbalazsworks.stackjudge_notification.oidc.factories.OidcServiceFactory
-import com.kbalazsworks.stackjudge_notification.oidc.services.OidcService
+import com.kbalazsworks.oidc.factories.OidcServiceFactory
+import com.kbalazsworks.oidc.services.OidcService
 import io.quarkus.arc.DefaultBean
 import javax.enterprise.context.Dependent
 import javax.enterprise.inject.Produces
