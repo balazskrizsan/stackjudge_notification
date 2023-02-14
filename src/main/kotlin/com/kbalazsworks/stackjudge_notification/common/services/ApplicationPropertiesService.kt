@@ -10,4 +10,7 @@ class ApplicationPropertiesService {
 
     @field:ConfigProperty(name = "main.stackjudge.app.host")
     lateinit var mainStackjudgeAppHost: String
+
+    @field:ConfigProperty(name = "keystore.full_path")
+    lateinit var keystoreFullPath: String
 }
