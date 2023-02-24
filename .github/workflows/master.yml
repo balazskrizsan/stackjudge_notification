@@ -1,0 +1,26 @@
+name: Kotlin Quarkus native
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Set Release version env variable
+      run: |
+        echo "RELEASE_VERSION=1.0" >> $GITHUB_ENV
+
+    - uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 6.5
+
+    - name: Run build with Gradle Wrapper
+      run: ./gradlew build
