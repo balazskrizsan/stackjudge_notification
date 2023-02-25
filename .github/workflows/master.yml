@@ -51,3 +51,7 @@ jobs:
         ls -hal ./src
         echo "===========> ls -hal /build:"
         ls -hal ./build
+
+    - name: Build docker image
+      run: |
+        docker build -f ./Dockerfile.native-distroless --tag stackjudge_notification_service:latest .
