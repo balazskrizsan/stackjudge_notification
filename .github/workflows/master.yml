@@ -41,7 +41,7 @@ jobs:
         ./gradlew build
 
     - name: File system info
-k      run: |
+      run: |
         echo "===========> github.workspace var: ${{ github.workspace }}"
         echo "===========> pwd:"
         pwd
