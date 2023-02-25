@@ -25,6 +25,18 @@ jobs:
       with:
         gradle-version: 6.5
 
+    - name: File system info
+      run: |
+        echo "===========> github.workspace var: ${{ github.workspace }}"
+        echo "===========> pwd:"
+        pwd
+        echo "===========> ls -hal:"
+        ls -hal
+        echo "===========> ls -hal /src:"
+        ls -hal ./src
+        echo "===========> ls -hal /build:"
+        ls -hal ./build
+
     - name: Run build with Gradle Wrapper
       run: |
         chmod +x ./gradlew
