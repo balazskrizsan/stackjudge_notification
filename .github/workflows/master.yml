@@ -35,6 +35,21 @@ jobs:
         echo "===========> ls -hal /src:"
         ls -hal ./src
 
+    - uses: graalvm/setup-graalvm@v1
+      with:
+        version: 'latest'
+        java-version: '17'
+        components: 'native-image'
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Example step
+      run: |
+        echo "GRAALVM_HOME: $GRAALVM_HOME"
+        echo "JAVA_HOME: $JAVA_HOME"
+        java --version
+        gu --version
+        native-image --version
+
     - name: Run build with Gradle Wrapper
       run: |
         chmod +x ./gradlew
