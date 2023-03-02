@@ -20,6 +20,7 @@ jobs:
         echo "AWS_S3_CDN_BUCKET=qwe" >> $GITHUB_ENV
         echo "AWS_SECRET_KEY=qwe" >> $GITHUB_ENV
         echo "AWS_ACCESS_KEY=qwe" >> $GITHUB_ENV
+        echo "KEYSTORE_FULL_PATH=qwe" >> $GITHUB_ENV
 
     - uses: gradle/gradle-build-action@v2
       with:
@@ -35,25 +36,10 @@ jobs:
         echo "===========> ls -hal /src:"
         ls -hal ./src
 
-    - uses: graalvm/setup-graalvm@v1
-      with:
-        version: '22.3.1'
-        java-version: '17'
-        components: 'native-image'
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Example step
-      run: |
-        echo "GRAALVM_HOME: $GRAALVM_HOME"
-        echo "JAVA_HOME: $JAVA_HOME"
-        java --version
-        gu --version
-        native-image --version
-
     - name: Run build with Gradle Wrapper
       run: |
         chmod +x ./gradlew
-        ./gradlew build -Dquarkus.package.type=native
+        ./gradlew build
 
     - name: File system info
       run: |
@@ -69,4 +55,4 @@ jobs:
 
     - name: Build docker image
       run: |
-        docker build -f ./Dockerfile.native-distroless --tag stackjudge_notification_service:latest .
+        docker build -f ./Dockerfile.jvm --tag stackjudge_notification_service:latest .
