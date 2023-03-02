@@ -56,3 +56,18 @@ jobs:
     - name: Build docker image
       run: |
         docker build -f ./Dockerfile.jvm --tag stackjudge_notification_service:latest .
+
+    - name: Save docker image
+      run: |
+        docker save -o stackjudge:${{ env.RELEASE_VERSION }}.docker stackjudge:latest
+
+    - name: Push do Cloudsmith
+      uses: cloudsmith-io/action@2f8578217e6fa9fe305977bb278057514bccd8ea
+      with:
+        api-key: ${{ secrets.CLOUDSMITH_API_KEY }}
+        command: push
+        format: docker
+        owner: stackjudge
+        repo: stackjudge_notification
+        republish: true
+        file: ./stackjudge:${{ env.RELEASE_VERSION }}.docker
