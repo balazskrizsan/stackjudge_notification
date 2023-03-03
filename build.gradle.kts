@@ -11,6 +11,13 @@ plugins {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url = uri("https://dl.cloudsmith.io/public/stackjudge/simple_oidc_java_maven/maven/")
+        credentials {
+            username = "krizsan-balazs"
+            password = "ffe61187c0230469f7120be055ed0f528305988e"
+        }
+    }
 }
 
 allprojects {
@@ -33,7 +40,7 @@ dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
 
     // custom
-    implementation("com.github.balazskrizsan:simple_oidc_java_maven:e166f1bd")
+    implementation("com.kbalazsworks:simple_oidc_java_maven:1.0.1")
     // https://mvnrepository.com/artifact/org.eclipse.microprofile.rest.client/microprofile-rest-client-api
     implementation("org.eclipse.microprofile.rest.client:microprofile-rest-client-api:3.0")
     // https://mvnrepository.com/artifact/io.quarkus/quarkus-resteasy-reactive
