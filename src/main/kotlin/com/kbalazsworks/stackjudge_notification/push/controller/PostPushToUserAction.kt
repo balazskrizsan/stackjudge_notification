@@ -1,7 +1,6 @@
 package com.kbalazsworks.stackjudge_notification.push.controller
 
-import com.kbalazsworks.oidc.factories.OidcServiceFactory
-import com.kbalazsworks.oidc.services.IOidcService
+import com.kbalazsworks.stackjudge_notification.oidc.OidcServiceFactory
 import com.kbalazsworks.stackjudge_notification.push.requests.PushToUserRequest
 import com.kbalazsworks.stackjudge_notification.push.service.PushMapperService
 import com.kbalazsworks.stackjudge_notification.push.service.SendPushMessageService
@@ -18,13 +17,12 @@ class PostPushToUserAction(
     private val oidcServiceFactory: OidcServiceFactory,
     private val sendPushMessageService: SendPushMessageService,
     private val pushMapperService: PushMapperService,
-    private val oidcService: IOidcService,
 ) {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
     fun action(@MultipartForm request: PushToUserRequest, @RestHeader("Authorization") token: String) {
-        oidcService.checkScopesInToken(token, listOf("sj.notification.send_push"))
+        oidcServiceFactory.get().checkScopesInToken(token, listOf("sj.notification.send_push"))
 
         sendPushMessageService.sendPush(pushMapperService.map(request))
     }

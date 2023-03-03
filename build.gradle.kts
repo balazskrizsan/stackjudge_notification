@@ -1,8 +1,11 @@
 plugins {
-    kotlin("jvm") version "1.5.31"
-    kotlin("plugin.allopen") version "1.5.31"
+    kotlin("jvm") version "1.7.20"
+    kotlin("plugin.allopen") version "1.7.20"
     id("io.quarkus")
     id("java-library")
+    id("net.afanasev.sekret") version "0.1.2"
+    id("maven-publish")
+    id("java")
 }
 
 repositories {
@@ -10,32 +13,39 @@ repositories {
     mavenLocal()
 }
 
+allprojects {
+    repositories {
+        maven("https://jitpack.io")
+    }
+}
+
 val quarkusPlatformGroupId: String by project
 val quarkusPlatformArtifactId: String by project
 val quarkusPlatformVersion: String by project
 
 dependencies {
-    implementation("io.quarkus:quarkus-kotlin")
+    implementation("io.quarkus:quarkus-kotlin:2.16.3.Final")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
-    implementation("io.quarkus:quarkus-arc:2.4.1.Final")
+    implementation("io.quarkus:quarkus-arc:2.16.3.Final")
     implementation("org.projectlombok:lombok:1.18.20")
-    testImplementation("io.quarkus:quarkus-junit5")
+    testImplementation("io.quarkus:quarkus-junit5:2.16.3.Final")
     testImplementation("io.rest-assured:rest-assured")
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
 
     // custom
+    implementation("com.github.balazskrizsan:simple_oidc_java_maven:e166f1bd")
     // https://mvnrepository.com/artifact/org.eclipse.microprofile.rest.client/microprofile-rest-client-api
     implementation("org.eclipse.microprofile.rest.client:microprofile-rest-client-api:3.0")
     // https://mvnrepository.com/artifact/io.quarkus/quarkus-resteasy-reactive
-    implementation("io.quarkus:quarkus-resteasy-reactive:2.4.2.Final")
+    implementation("io.quarkus:quarkus-resteasy-reactive:2.16.3.Final")
     // https://mvnrepository.com/artifact/io.quarkus/quarkus-resteasy-reactive-qute
-    implementation("io.quarkus:quarkus-resteasy-reactive-qute:2.4.2.Final")
+    implementation("io.quarkus:quarkus-resteasy-reactive-qute:2.16.3.Final")
     // https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-openapi
-    implementation("io.quarkus:quarkus-smallrye-openapi:2.5.0.CR1")
+    implementation("io.quarkus:quarkus-smallrye-openapi:2.16.3.Final")
     // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
     implementation("javax.xml.bind:jaxb-api:2.3.0")
     // https://mvnrepository.com/artifact/io.quarkus/quarkus-resteasy-reactive-jsonb
-    implementation("io.quarkus:quarkus-resteasy-reactive-jsonb:2.7.2.Final")
+    implementation("io.quarkus:quarkus-resteasy-reactive-jsonb:2.16.3.Final")
     // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging-jvm
     runtimeOnly("io.github.microutils:kotlin-logging-jvm:2.1.21")
     // https://mvnrepository.com/artifact/org.assertj/assertj-core

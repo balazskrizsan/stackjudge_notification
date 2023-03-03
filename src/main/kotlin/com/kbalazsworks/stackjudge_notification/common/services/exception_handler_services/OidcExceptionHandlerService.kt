@@ -1,10 +1,10 @@
 package com.kbalazsworks.stackjudge_notification.common.services.exception_handler_services
 
+import com.kbalazsworks.simple_oidc.exceptions.OidcException
+import com.kbalazsworks.simple_oidc.exceptions.OidcExpiredTokenException
+import com.kbalazsworks.simple_oidc.exceptions.OidcJwksVerificationException
+import com.kbalazsworks.simple_oidc.exceptions.OidcJwtParseException
 import com.kbalazsworks.stackjudge_notification.common.builders.ResponseEntityBuilder
-import com.kbalazsworks.oidc.exceptions.OidcException
-import com.kbalazsworks.oidc.exceptions.OidcExpiredTokenException
-import com.kbalazsworks.oidc.exceptions.OidcJwksVerificationException
-import com.kbalazsworks.oidc.exceptions.OidcJwtParseException
 import org.slf4j.LoggerFactory
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
