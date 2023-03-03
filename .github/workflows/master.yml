@@ -59,7 +59,7 @@ jobs:
 
     - name: Save docker image
       run: |
-        docker save -o stackjudge:${{ env.RELEASE_VERSION }}.docker stackjudge:latest
+        docker save -o stackjudge_notification_service:${{ env.RELEASE_VERSION }}.docker stackjudge_notification_service:latest
 
     - name: Push do Cloudsmith
       uses: cloudsmith-io/action@2f8578217e6fa9fe305977bb278057514bccd8ea
@@ -70,4 +70,4 @@ jobs:
         owner: stackjudge
         repo: stackjudge_notification
         republish: true
-        file: ./stackjudge:${{ env.RELEASE_VERSION }}.docker
+        file: ./stackjudge_notification_service:${{ env.RELEASE_VERSION }}.docker
