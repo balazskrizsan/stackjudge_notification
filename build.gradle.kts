@@ -20,12 +20,6 @@ repositories {
     }
 }
 
-allprojects {
-    repositories {
-        maven("https://jitpack.io")
-    }
-}
-
 val quarkusPlatformGroupId: String by project
 val quarkusPlatformArtifactId: String by project
 val quarkusPlatformVersion: String by project
